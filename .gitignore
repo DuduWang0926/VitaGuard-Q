@@ -1,1 +1,34 @@
 Agent/
+
+# Object files
+*.o
+*.obj
+
+# Executable and binary files
+*.elf
+*.axf
+*.hex
+*.bin
+*.map
+*.lst
+
+# Debug files
+*.d
+*.crf
+*.dep
+*.bak
+*.orig
+
+# Build directories
+Debug/
+Release/
+build/
+Output/
+Listings/
+Objects/
+
+# IDE temporary files
+*.uvguix.*
+*.uvoptx
+*.uvgui.*
+*.launch
