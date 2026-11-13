@@ -730,6 +730,46 @@
               <FileType>5</FileType>
               <FilePath>.\Surroundings\Tick.h</FilePath>
             </File>
+            <File>
+              <FileName>Board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\Board.c</FilePath>
+            </File>
+            <File>
+              <FileName>Board.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Board.h</FilePath>
+            </File>
+            <File>
+              <FileName>UART1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\UART1.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\UART1.h</FilePath>
+            </File>
+            <File>
+              <FileName>Temp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\Temp.c</FilePath>
+            </File>
+            <File>
+              <FileName>Temp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Temp.h</FilePath>
+            </File>
+            <File>
+              <FileName>Key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\Key.c</FilePath>
+            </File>
+            <File>
+              <FileName>Key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Key.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

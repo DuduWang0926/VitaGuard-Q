@@ -48,8 +48,9 @@ void MyI2C_Init(void)
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
 
-    /* PA15 默认是 JTDI：关闭 JTAG、保留 SWD，否则 PA15 写不进去 */
-    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
+    /* PA15 复位后是 JTDI，需要先关 JTAG 才能当 GPIO。
+     * 这件事统一交给 Board_Init() 在最后一步做（顺序有讲究，见 Board.c），
+     * 这里只负责把引脚配成开漏。 */
 
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_OD;
     GPIO_InitStructure.GPIO_Pin   = MYI2C_SCL_PIN | MYI2C_SDA_PIN;
