@@ -1,0 +1,6 @@
+屏幕：硬件I2C PB8-SCL PB9-SDA（I2C1 重映射，需开 AFIO）
+接触温度：UART1 PB7-RX PB6-TX
+血压：UART2  PA3-RX PA2-TX
+树莓派（预留）：UART3 PB11-RX PB10-TX
+软件I2C（温湿度 接触血样）： PA12-SDA PA15-SCL
+按钮（共4个） 1：PA8 2：PA9 3：PA10 4：PA11，按钮一端GPIO，一端接地，需上拉

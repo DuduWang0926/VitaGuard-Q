@@ -675,6 +675,61 @@
               <FileType>5</FileType>
               <FilePath>.\Surroundings\OLED_Font.h</FilePath>
             </File>
+            <File>
+              <FileName>MyI2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\MyI2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>MyI2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\MyI2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>Max30102.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\Max30102.c</FilePath>
+            </File>
+            <File>
+              <FileName>Max30102.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Max30102.h</FilePath>
+            </File>
+            <File>
+              <FileName>Max30102Reg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Max30102Reg.h</FilePath>
+            </File>
+            <File>
+              <FileName>SHT3X.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\SHT3X.c</FilePath>
+            </File>
+            <File>
+              <FileName>SHT3X.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\SHT3X.h</FilePath>
+            </File>
+            <File>
+              <FileName>SpO2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\SpO2.c</FilePath>
+            </File>
+            <File>
+              <FileName>SpO2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\SpO2.h</FilePath>
+            </File>
+            <File>
+              <FileName>Tick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\Tick.c</FilePath>
+            </File>
+            <File>
+              <FileName>Tick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\Tick.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
