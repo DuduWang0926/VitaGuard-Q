@@ -292,7 +292,7 @@ static void UI_PageBloodPressure(const UI_State *State)
 
     case BP_TIMEOUT:
         UI_Text(2, 1, "Timeout");
-        UI_Text(3, 1, "No result in 60s");
+        UI_Text(3, 1, "120s no result");    /* 16 列放不下 "No result in 120s" */
         UI_Text(4, 1, "SW3: retry");
         break;
 

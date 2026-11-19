@@ -33,11 +33,11 @@ typedef enum
 {
 	BP_IDLE = 0,		/* 空闲，等用户按开始 */
 	BP_CHECKING,		/* 已发 AA，等检测回显（1s 超时） */
-	BP_MEASURING,		/* 已发 A0，等过程帧 / 终帧（60s 超时） */
+	BP_MEASURING,		/* 已发 A0，等过程帧 / 终帧（120s 超时） */
 	BP_DONE,			/* 拿到结果帧 */
 	BP_FAILED,			/* 拿到失败帧，原因见 BP_GetFailCode() */
 	BP_OFFLINE,			/* 1s 内没有检测回显：设备不在或没接线 */
-	BP_TIMEOUT,			/* 60s 没有终帧 */
+	BP_TIMEOUT,			/* 120s 没有终帧 */
 	BP_ABORTED			/* 用户主动中止（已发 A1） */
 } BP_State;
 
