@@ -101,6 +101,18 @@ static void State_EnterPage(uint8_t Page, uint32_t Now)
     else if (Page == UI_PAGE_SPO2)
     {
         /*
+         * 开机自检失败过的话，进页面再试一次 —— 否则只能断电重启。
+         * 常见的失败原因是上电瞬间总线没准备好（现在由 MyI2C_Init 的
+         * 9 时钟恢复 + Max30102 的 3 次重试化解），但现场重新插拔模块后
+         * 同样需要这个"手动重试"入口。
+         */
+        if (!s_spo2Ok)
+        {
+            s_spo2Ok       = SpO2_Init();
+            s_state.spo2Ok = s_spo2Ok;
+        }
+
+        /*
          * 菜单态不读 MAX30102，但芯片仍在按 100Hz 采样，FIFO 只有 32 深度
          * （ROLLOVER 已关闭）→ 320ms 后必然溢出。所以每次进来先清 FIFO、
          * 重置算法窗口，否则头几秒读到的是陈旧的溢出数据。

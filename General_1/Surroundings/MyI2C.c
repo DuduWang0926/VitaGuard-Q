@@ -44,13 +44,17 @@ uint8_t MyI2C_R_SDA(void)
 
 void MyI2C_Init(void)
 {
+    uint8_t i;
     GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
 
-    /* PA15 复位后是 JTDI，需要先关 JTAG 才能当 GPIO。
-     * 这件事统一交给 Board_Init() 在最后一步做（顺序有讲究，见 Board.c），
-     * 这里只负责把引脚配成开漏。 */
+    /* PA15 复位后是 JTDI，必须先关 JTAG 才能当 GPIO。
+     * Board_Init() 已经在最后一步关过，这里再关一次是**幂等**的：
+     * 该调用只会把 SWJ_CFG 置成 010，不影响 MAPR 里其它重映射位（如 USART1）。
+     * 目的是让本文件自包含 —— 万一以后有人调整初始化顺序、
+     * 或单独调用 MyI2C_Init()，PA15 依然是可用的 GPIO。 */
+    GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_OD;
     GPIO_InitStructure.GPIO_Pin   = MYI2C_SCL_PIN | MYI2C_SDA_PIN;
@@ -59,6 +63,34 @@ void MyI2C_Init(void)
 
     /* 释放总线（开漏 + 外部上拉 => 高电平） */
     GPIO_SetBits(MYI2C_PORT, MYI2C_SCL_PIN | MYI2C_SDA_PIN);
+    Delay_us(10);
+
+    /*
+     * 总线恢复：从机如果被卡在"正在发数据"的半截状态，会把 SDA 一直拉低，
+     * 这时主机永远等不到 ACK，每次读寄存器都失败（表现为 Max30102_ErrorStep 恒为 10），
+     * 而且不会自己恢复。补 9 个时钟就能让它把剩下的位吐完、放开 SDA。
+     */
+    if (GPIO_ReadInputDataBit(MYI2C_PORT, MYI2C_SDA_PIN) == Bit_RESET)
+    {
+        for (i = 0; i < 9; i++)
+        {
+            GPIO_ResetBits(MYI2C_PORT, MYI2C_SCL_PIN);
+            Delay_us(10);
+            GPIO_SetBits(MYI2C_PORT, MYI2C_SCL_PIN);
+            Delay_us(10);
+        }
+    }
+
+    /* 再补一个 STOP，确保总线从"空闲"开始，而不是停在半截事务里。
+     * 顺序：SCL 先拉低 —— 否则在 SCL 高电平期间拉低 SDA 会被从机当成 START。 */
+    GPIO_ResetBits(MYI2C_PORT, MYI2C_SCL_PIN);
+    Delay_us(10);
+    GPIO_ResetBits(MYI2C_PORT, MYI2C_SDA_PIN);
+    Delay_us(10);
+    GPIO_SetBits(MYI2C_PORT, MYI2C_SCL_PIN);
+    Delay_us(10);
+    GPIO_SetBits(MYI2C_PORT, MYI2C_SDA_PIN);
+    Delay_us(10);
 }
 
 /* ==================== 协议层 ==================== */

@@ -7,7 +7,8 @@
 /*
  * 错误代码：
  * 0  = 正常
- * 10 = PART_ID读取失败或芯片ID错误
+ * 10 = PART_ID 读取失败（I2C 无应答）
+ * 11 = 芯片ID错误（读到了，但不是 0x15）
  * 20 = 复位寄存器写入失败
  * 21 = 复位状态读取失败
  * 22 = 复位超时
@@ -23,6 +24,7 @@
  */
 
 volatile uint8_t Max30102_ErrorStep = 0;
+volatile uint8_t Max30102_PartID = 0;   /* 读到的原始 PART_ID，现场排障用 */
 
 
 /* ==================== 底层寄存器操作 ==================== */
@@ -151,14 +153,49 @@ uint8_t Max30102_ClearFIFO(void)
 uint8_t Max30102_STMeasure_SPO2(void)
 {
     uint8_t PartID;
+    uint8_t Retry;
 
-    // 1. 检查芯片ID
+    /*
+     * 0. 先把总线恢复到空闲状态。
+     *    初始化失败最常见的形态就是"总线被从机锁死"，重试之前必须先解锁，
+     *    否则再试 3 次也还是全部 NACK。MyI2C_Init() 里有 9 时钟 + STOP。
+     */
+    MyI2C_Init();
+
+    /*
+     * 1. 检查芯片ID
+     *
+     * 上电瞬间、或总线刚被解锁时，第一笔事务可能是瞬态 NACK，
+     * 所以最多试 3 次、每次间隔 5ms。只试一次的话，
+     * 抖一下就会永久判定失败（s_spo2Ok = 0），除非重新上电。
+     *
+     * ErrorStep 区分两种失败：
+     *   10 = 完全无应答（接线 / 上拉 / 电源 / 总线被从机锁死）
+     *   11 = 有应答但 ID 不是 0x15（芯片型号不对，或模块地址不对）
+     */
     Max30102_ErrorStep = 10;
+    Max30102_PartID    = 0;
 
-    if(!Max30102_ReadReg(MAX30102_PART_ID, &PartID))
-        return 0;
+    for(Retry = 0; Retry < 3; Retry++)
+    {
+        if(Max30102_ReadReg(MAX30102_PART_ID, &PartID))
+        {
+            Max30102_PartID = PartID;
 
-    if(PartID != 0x15)
+            if(PartID == 0x15)
+                break;
+
+            Max30102_ErrorStep = 11;
+        }
+        else
+        {
+            Max30102_ErrorStep = 10;
+        }
+
+        Delay_ms(5);
+    }
+
+    if(Retry == 3)
         return 0;
 
 

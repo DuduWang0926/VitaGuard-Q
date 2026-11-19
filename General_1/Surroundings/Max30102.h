@@ -4,6 +4,7 @@
 #include "stm32f10x.h"
 
 extern volatile uint8_t Max30102_ErrorStep;
+extern volatile uint8_t Max30102_PartID;    /* 读到的原始 PART_ID，正常应为 0x15 */
 
 uint8_t Max30102_Reset(void);
 
