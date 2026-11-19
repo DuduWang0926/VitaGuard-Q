@@ -171,6 +171,21 @@ uint8_t SpO2_Init(void)
     return Max30102_STMeasure_SPO2();
 }
 
+void SpO2_Restart(void)
+{
+    s_filtInit   = 0;           /* 下一帧重新用原始值播种滤波器 */
+    s_finger     = 0;
+    s_fingerPrev = 0;
+    s_spo2       = 0;
+    s_hr         = 0;
+    s_valid      = 0;
+    s_fifoErr    = 0;
+    SpO2_ResetWindow();
+
+    /* 芯片没接也不影响：无应答会立刻返回 0，软件 I2C 不会长时间阻塞 */
+    (void)Max30102_ClearFIFO();
+}
+
 uint8_t SpO2_Task(void)
 {
     uint8_t count;

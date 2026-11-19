@@ -19,6 +19,13 @@
  */
 
 uint8_t SpO2_Init(void);            /* 1=初始化成功 */
+
+/* 丢弃滤波器历史、窗口统计与上一次结果，并清空 MAX30102 FIFO。
+ * 菜单式界面里，离开血氧页时不再调用 SpO2_Task()，芯片仍在按 100Hz 采样，
+ * 32 深度的 FIFO 在 320ms 内就会溢出（ROLLOVER 已关闭）。
+ * 因此每次【进入】血氧页必须先 Restart，否则前几秒读到的是陈旧/溢出数据。 */
+void    SpO2_Restart(void);
+
 uint8_t SpO2_Task(void);            /* 返回 1 表示本窗算出了新结果 */
 void    SpO2_Get(uint8_t *spo2, uint8_t *hr, uint8_t *valid);
 uint8_t SpO2_FingerPresent(void);   /* 1=检测到手指（IR 直流足够大） */

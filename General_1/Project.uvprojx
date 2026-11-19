@@ -770,6 +770,36 @@
               <FileType>5</FileType>
               <FilePath>.\Surroundings\Key.h</FilePath>
             </File>
+            <File>
+              <FileName>UART2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\UART2.c</FilePath>
+            </File>
+            <File>
+              <FileName>UART2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\UART2.h</FilePath>
+            </File>
+            <File>
+              <FileName>BP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\BP.c</FilePath>
+            </File>
+            <File>
+              <FileName>BP.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\BP.h</FilePath>
+            </File>
+            <File>
+              <FileName>UI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Surroundings\UI.c</FilePath>
+            </File>
+            <File>
+              <FileName>UI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Surroundings\UI.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
